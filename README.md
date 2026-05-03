@@ -1,8 +1,9 @@
 # KEDAI KOPI ASMDS
 # Anggota :
-Nama : Ivan Tampansyah (2350231023) 
-Nama : Muhammad Gizka Naufal Rizkullah (2350231003) 
-Nama : Billy Iin Nazwa Gemilang (2350231012)
+| Nama | NIM | Peran |
+Nama : Ivan Tampansyah (2350231023) |Lead Developer, Deploy|
+Nama : Muhammad Gizka Naufal Rizkullah (2350231003) |UI Enhancement|
+Nama : Billy Iin Nazwa Gemilang (2350231012) |Konten & Dokumentasi|
 
 # link website Live : https://kedai-kopi-asmds.store
 
