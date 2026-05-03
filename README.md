@@ -1,4 +1,10 @@
 # KEDAI KOPI ASMDS
+Anggota :
+Nama : Ivan Tampansyah (2350231023) 
+Nama : Muhammad Gizka Naufal Rizkullah (2350231003)
+Nama : Billy Iin Nazwa Gemilang (2350231012)
+
+link website Live : https://kedai-kopi-asmds.store
 
 Website kedai kopi sederhana dan responsif yang dibuat untuk tugas praktikum kolaborasi tim menggunakan Git. Project ini dikembangkan menggunakan HTML, CSS, dan JavaScript.
 
