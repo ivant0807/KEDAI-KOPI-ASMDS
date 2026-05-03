@@ -1,4 +1,9 @@
 # link website Live : https://kedai-kopi-asmds.store
+<img width="1727" height="995" alt="image" src="https://github.com/user-attachments/assets/cefa90c4-d73e-48de-88f1-e1d31719de71" />
+# Amggota
+Nama : Ivan Tampansyah 2350231023
+Nama : Muhammad Gizka Naufal Rizkullah 2350231003
+Nama : Billy Iin Nazwa Gemilang 2350231012
 
 Website kedai kopi sederhana dan responsif yang dibuat untuk tugas praktikum kolaborasi tim menggunakan Git. Project ini dikembangkan menggunakan HTML, CSS, dan JavaScript.
 
