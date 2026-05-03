@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KEDAI KOPI ASMDS</title>
+  <meta name="description" content="Website kedai kopi modern dan responsif untuk tugas praktikum kolaborasi tim menggunakan Git." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten</a>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="#home" class="brand">
+        <span class="brand-mark">☕</span>
+        <span class="brand-text">
+          <strong>KEDAI KOPI</strong>
+          <small>ASMDS</small>
+        </span>
+      </a>
+
+      <nav class="main-nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Ganti tema">🌙</button>
+        <a class="btn btn-primary" href="#order">Pesan Sekarang</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Buka menu" aria-expanded="false">☰</button>
+    </div>
+
+    <div class="mobile-nav container" hidden>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <a href="#order">Pesan Sekarang</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="home">
+      <div class="hero-overlay"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Kedai kopi modern • Hangat • Responsif</p>
+          <h1>Rasa kopi terbaik untuk menemani setiap momen.</h1>
+          <p class="hero-text">
+            KEDAI KOPI ASMDS menghadirkan suasana premium dengan racikan espresso,
+            manual brew, dan camilan favorit dalam satu pengalaman digital yang elegan.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#menu">Lihat Menu</a>
+            <a class="btn btn-secondary" href="#about">Tentang Kami</a>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <h2>12+</h2>
+              <p>Signature Menu</p>
+            </article>
+            <article class="stat-card">
+              <h2>8 AM</h2>
+              <p>Buka Setiap Hari</p>
+            </article>
+            <article class="stat-card">
+              <h2>4.9</h2>
+              <p>Rating Pelanggan</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card floating-card">
+            <p class="card-label">Best Seller</p>
+            <h3>Caramel Latte</h3>
+            <p>Espresso creamy dengan sentuhan caramel dan foam lembut.</p>
+            <span class="price">Rp28.000</span>
+          </div>
+
+          <div class="hero-image-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"
+              alt="Secangkir kopi hangat di meja kayu"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="container split-grid">
+        <div>
+          <p class="section-kicker">Tentang Kedai</p>
+          <h2>Tempat singgah untuk kopi, cerita, dan ide baru.</h2>
+          <p>
+            Kedai Kopi ASMDS dirancang sebagai website company profile sekaligus media
+            pemesanan sederhana. Konsep visualnya mengambil nuansa dark elegant dengan
+            layout modern satu halaman.
+          </p>
+          <p>
+            Fokus utama website ini adalah menampilkan identitas brand, daftar menu
+            unggulan, promo, dan jalur pemesanan yang cepat.
+          </p>
+        </div>
+
+        <div class="about-cards">
+          <article class="info-card">
+            <span>01</span>
+            <h3>Biji Pilihan</h3>
+            <p>Menggunakan house blend dengan karakter cokelat, nutty, dan aroma seimbang.</p>
+          </article>
+          <article class="info-card">
+            <span>02</span>
+            <h3>Suasana Premium</h3>
+            <p>Palet warna gelap dan aksen hangat membuat brand terasa eksklusif.</p>
+          </article>
+          <article class="info-card">
+            <span>03</span>
+            <h3>Pemesanan Cepat</h3>
+            <p>Pelanggan dapat memilih menu lalu langsung mengisi form order sederhana.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">Menu Pilihan</p>
+            <h2>Diracik untuk pencinta kopi dan suasana tenang.</h2>
+          </div>
+
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="coffee">Coffee</button>
+            <button class="filter-btn" data-filter="noncoffee">Non Coffee</button>
+            <button class="filter-btn" data-filter="snack">Snack</button>
+          </div>
+        </div>
+
+        <div class="menu-grid">
+          <article class="menu-card" data-category="coffee">
+            <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80" alt="Espresso">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Espresso</h3><span>Rp18.000</span></div>
+              <p>Shot espresso pekat dengan crema lembut dan aroma roasted yang tajam.</p>
+              <button class="btn btn-small add-to-cart" data-name="Espresso" data-price="18000">Tambah Pesanan</button>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="coffee">
+            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=80" alt="Cappuccino">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Cappuccino</h3><span>Rp25.000</span></div>
+              <p>Perpaduan espresso, steamed milk, dan milk foam yang lembut dan klasik.</p>
+              <button class="btn btn-small add-to-cart" data-name="Cappuccino" data-price="25000">Tambah Pesanan</button>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="coffee">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=80" alt="Caramel Latte">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Caramel Latte</h3><span>Rp28.000</span></div>
+              <p>Latte creamy dengan sentuhan manis caramel yang cocok untuk semua suasana.</p>
+              <button class="btn btn-small add-to-cart" data-name="Caramel Latte" data-price="28000">Tambah Pesanan</button>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="noncoffee">
+            <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=700&q=80" alt="Matcha Latte">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Matcha Latte</h3><span>Rp27.000</span></div>
+              <p>Minuman creamy dengan rasa matcha lembut dan tampilan segar yang elegan.</p>
+              <button class="btn btn-small add-to-cart" data-name="Matcha Latte" data-price="27000">Tambah Pesanan</button>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="noncoffee">
+            <img src="https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=700&q=80" alt="Chocolate">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Chocolate</h3><span>Rp24.000</span></div>
+              <p>Hot chocolate kental dengan rasa manis seimbang dan tekstur halus.</p>
+              <button class="btn btn-small add-to-cart" data-name="Chocolate" data-price="24000">Tambah Pesanan</button>
+            </div>
+          </article>
+
+          <article class="menu-card" data-category="snack">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=80" alt="Croissant Butter">
+            <div class="menu-content">
+              <div class="menu-top"><h3>Croissant Butter</h3><span>Rp20.000</span></div>
+              <p>Pastry renyah berlapis dengan aroma butter yang lembut dan gurih.</p>
+              <button class="btn btn-small add-to-cart" data-name="Croissant Butter" data-price="20000">Tambah Pesanan</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section experience" id="experience">
+      <div class="container experience-grid">
+        <div class="experience-copy">
+          <p class="section-kicker">Kenapa Memilih Kami</p>
+          <h2>Pengalaman ngopi yang hangat, cepat, dan berkelas.</h2>
+          <ul class="feature-list">
+            <li>Desain website premium dan responsif untuk semua perangkat.</li>
+            <li>Menu unggulan yang mudah dibaca dengan visual yang kuat.</li>
+            <li>Alur pemesanan sederhana tanpa ribet.</li>
+            <li>Cocok sebagai project kolaborasi tim berbasis Git.</li>
+          </ul>
+        </div>
+
+        <div class="promo-panel">
+          <p class="promo-badge">Promo Hari Ini</p>
+          <h3>Buy 2 Latte, Get 1 Croissant</h3>
+          <p>Nikmati promo spesial untuk pembelian minuman latte favorit bersama pastry pilihan.</p>
+          <a href="#order" class="btn btn-primary">Klaim Promo</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section order" id="order">
+      <div class="container order-grid">
+        <div>
+          <p class="section-kicker">Form Pemesanan</p>
+          <h2>Pesan menu favoritmu sekarang.</h2>
+          <p>
+            Tambahkan menu dari daftar di atas atau isi manual form berikut untuk simulasi pemesanan sederhana.
+          </p>
+
+          <form class="order-form" id="orderForm">
+            <label>
+              Nama Pemesan
+              <input type="text" id="customerName" placeholder="Masukkan nama" required>
+            </label>
+
+            <label>
+              Pilih Menu
+              <input type="text" id="selectedMenu" placeholder="Contoh: Caramel Latte" required>
+            </label>
+
+            <label>
+              Jumlah
+              <input type="number" id="quantity" min="1" value="1" required>
+            </label>
+
+            <label>
+              Catatan
+              <textarea id="notes" rows="4" placeholder="Tambahan gula, es, atau request lainnya"></textarea>
+            </label>
+
+            <button type="submit" class="btn btn-primary full-width">Kirim Pesanan</button>
+          </form>
+        </div>
+
+        <aside class="cart-panel">
+          <div class="cart-head">
+            <h3>Pesanan Kamu</h3>
+            <span id="cartCount">0 item</span>
+          </div>
+
+          <div id="cartItems" class="cart-items">
+            <p class="empty-state">Belum ada menu yang dipilih.</p>
+          </div>
+
+          <div class="cart-total">
+            <span>Total</span>
+            <strong id="cartTotal">Rp0</strong>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container contact-grid">
+        <div>
+          <p class="section-kicker">Kontak</p>
+          <h2>Datang langsung atau pesan melalui kontak kami.</h2>
+
+          <div class="contact-list">
+            <div class="contact-item">
+              <span>📍</span>
+              <div>
+                <h3>Alamat</h3>
+                <p>Jl. Terusan Jend. Sudirman, Cibeber, Kec. Cimahi Sel., Kota Cimahi, Jawa Barat</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <span>⏰</span>
+              <div>
+                <h3>Jam Operasional</h3>
+                <p>Setiap hari, 08.00 - 22.00 WIB</p>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <span>📞</span>
+              <div>
+                <h3>WhatsApp</h3>
+                <p>+62 888-2129-899</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-card">
+          <iframe
+            title="Lokasi Kedai Kopi ASMDS"
+            src="https://www.google.com/maps?q=Universitas%20Jenderal%20Achmad%20Yani%20Cimahi&output=embed"
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <div>
+        <h3>KEDAI KOPI ASMDS</h3>
+        <p>Website tugas praktikum kolaborasi tim menggunakan Git.</p>
+      </div>
+      <p>© 2026 KEDAI KOPI ASMDS. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Pesanan berhasil ditambahkan.</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
