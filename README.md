@@ -1,10 +1,3 @@
-# KEDAI KOPI ASMDS
-# Anggota :
-| Nama | NIM | Peran |
-Nama : Ivan Tampansyah (2350231023) |Lead Developer, Deploy|
-Nama : Muhammad Gizka Naufal Rizkullah (2350231003) |UI Enhancement|
-Nama : Billy Iin Nazwa Gemilang (2350231012) |Konten & Dokumentasi|
-
 # link website Live : https://kedai-kopi-asmds.store
 
 Website kedai kopi sederhana dan responsif yang dibuat untuk tugas praktikum kolaborasi tim menggunakan Git. Project ini dikembangkan menggunakan HTML, CSS, dan JavaScript.
@@ -43,3 +36,4 @@ Project ini dikerjakan secara berkelompok untuk memenuhi tugas praktikum.
 
 ## Catatan
 Project ini ditujukan untuk kebutuhan pembelajaran dan tugas kuliah.
+ 
