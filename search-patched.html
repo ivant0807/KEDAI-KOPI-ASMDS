@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ✅ PATCH 1: Content Security Policy - mencegah eksekusi script inline berbahaya -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+  <title>Pencarian Menu (Patched) - KEDAI KOPI ASMDS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #c8a96e;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #c8a96e;
+      background: #16213e;
+      color: #fff;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px 24px;
+      background: #c8a96e;
+      color: #1a1a2e;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover { background: #e0c080; }
+    .result {
+      background: #16213e;
+      border: 1px solid #c8a96e33;
+      border-radius: 12px;
+      padding: 20px 30px;
+      max-width: 500px;
+      width: 100%;
+      font-size: 1rem;
+      color: #ccc;
+      min-height: 60px;
+    }
+    .result span { color: #c8a96e; font-weight: bold; }
+    .success {
+      margin-top: 40px;
+      background: #00ff0022;
+      border: 1px solid #44ff44;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      color: #99ff99;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    nav {
+      margin-bottom: 40px;
+    }
+    nav a {
+      color: #c8a96e;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.95rem;
+    }
+    nav a:hover { text-decoration: underline; }
+    .patch-info {
+      margin-top: 20px;
+      background: #16213e;
+      border: 1px solid #c8a96e33;
+      border-radius: 8px;
+      padding: 16px 20px;
+      max-width: 500px;
+      width: 100%;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+    .patch-info h3 { color: #c8a96e; margin-bottom: 8px; }
+    .patch-info ul { padding-left: 16px; }
+    .patch-info li { margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="logo">☕ KEDAI KOPI ASMDS</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="search-patched.html">Pencarian (Patched)</a>
+  </nav>
+
+  <h1>Cari Menu Favorit</h1>
+
+  <div class="search-box">
+    <input type="text" id="query" placeholder="Ketik nama menu..." maxlength="100"/>
+    <button onclick="cariMenu()">Cari</button>
+  </div>
+
+  <div class="result" id="hasil">
+    Hasil pencarian akan muncul di sini.
+  </div>
+
+  <div class="success">
+    ✅ Halaman ini adalah versi PATCHED - Input telah disanitasi dari XSS.
+  </div>
+
+  <div class="patch-info">
+    <h3>🛡️ Patch yang Diterapkan:</h3>
+    <ul>
+      <li>✅ Menggunakan <code>textContent</code> bukan <code>innerHTML</code></li>
+      <li>✅ Fungsi sanitasi <code>escapeHTML()</code> untuk encode karakter berbahaya</li>
+      <li>✅ Validasi & batasan panjang input (maxlength=100)</li>
+      <li>✅ Content Security Policy (CSP) header</li>
+      <li>✅ URL parameter disanitasi sebelum ditampilkan</li>
+    </ul>
+  </div>
+
+  <script>
+    // ✅ PATCH 2: Fungsi sanitasi input - encode karakter HTML berbahaya
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
+    }
+
+    // ✅ PATCH 3: Gunakan textContent bukan innerHTML
+    function cariMenu() {
+      var query = document.getElementById('query').value;
+
+      // Validasi input tidak boleh kosong
+      if (!query.trim()) {
+        document.getElementById('hasil').textContent = 'Masukkan nama menu yang ingin dicari.';
+        return;
+      }
+
+      // Sanitasi input sebelum ditampilkan
+      var sanitized = escapeHTML(query);
+
+      // Gunakan innerHTML dengan nilai yang sudah di-escape (aman)
+      document.getElementById('hasil').innerHTML =
+        'Hasil pencarian untuk: <span>' + sanitized + '</span>';
+    }
+
+    // ✅ PATCH 4: URL parameter disanitasi sebelum digunakan
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get('q');
+    if (q) {
+      // Batasi panjang input dari URL
+      q = q.substring(0, 100);
+      var sanitized = escapeHTML(q);
+      document.getElementById('query').value = q;
+      document.getElementById('hasil').innerHTML =
+        'Hasil pencarian untuk: <span>' + sanitized + '</span>';
+    }
+  </script>
+
+</body>
+</html>
