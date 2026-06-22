@@ -1,0 +1,11 @@
+**/node_modules
+backend/.env
+.env
+.env.docker
+.git
+.gitignore
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,3 @@
+# Pastikan skrip shell selalu LF (mencegah "bad interpreter" di container Linux)
+*.sh text eol=lf
+docker-entrypoint.sh text eol=lf

@@ -1,0 +1,16 @@
+# =============================================================
+# Override UJI pra-cutover — dipakai bersama docker-compose.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
+# Tujuan: uji container TANPA merebut port 80/443 dari Nginx host
+# (situs lama tetap live selama pengujian).
+# =============================================================
+services:
+  app:
+    # Uji app langsung dari host, hanya loopback (tidak terekspos publik)
+    ports:
+      - "127.0.0.1:3001:3000"
+  nginx:
+    # Uji Nginx container di port alternatif
+    ports:
+      - "8080:80"
+      - "8443:443"

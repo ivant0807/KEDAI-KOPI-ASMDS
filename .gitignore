@@ -4,6 +4,14 @@ backend/node_modules/
 # Environment variables — JANGAN pernah di-commit
 backend/.env
 
+# Docker compose env (berisi password DB + JWT_SECRET) — JANGAN di-commit
+/.env
+/.env.docker
+
+# Webroot ACME challenge (runtime, jangan di-commit isinya)
+nginx/certbot-webroot/*
+!nginx/certbot-webroot/.gitkeep
+
 # Prisma generated client
 backend/node_modules/.prisma/
 
