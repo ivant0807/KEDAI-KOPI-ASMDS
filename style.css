@@ -614,4 +614,93 @@ p {
     flex-direction: column;
     align-items: start;
   }
-}/* perbaikan responsif mobile */
+}
+
+/* ── Login Modal ──────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay[hidden] { display: none; }
+
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+.modal-box h2 {
+  margin-bottom: 4px;
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 0.95rem;
+}
+.modal-close:hover { color: var(--text); border-color: var(--muted); }
+
+.modal-box label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.modal-box input {
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.modal-box input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Auth Area (header) ───────────────────────────────────────────────────── */
+#authArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── Shared form utilities ────────────────────────────────────────────────── */
+.form-error {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+.form-error[hidden] { display: none; }
+
+/* ── Menu loading/error state ─────────────────────────────────────────────── */
+.menu-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  padding: 48px 0;
+  font-size: 1rem;
+}

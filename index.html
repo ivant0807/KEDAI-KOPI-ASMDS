@@ -35,6 +35,9 @@
 
       <div class="header-actions">
         <button class="theme-toggle" data-theme-toggle aria-label="Ganti tema">🌙</button>
+        <div id="authArea">
+          <button class="btn btn-secondary btn-small" id="loginOpenBtn">Login</button>
+        </div>
         <a class="btn btn-primary" href="#order">Pesan Sekarang</a>
       </div>
 
@@ -154,60 +157,8 @@
           </div>
         </div>
 
-        <div class="menu-grid">
-          <article class="menu-card" data-category="coffee">
-            <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80" alt="Espresso">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Espresso</h3><span>Rp18.000</span></div>
-              <p>Shot espresso pekat dengan crema lembut dan aroma roasted yang tajam.</p>
-              <button class="btn btn-small add-to-cart" data-name="Espresso" data-price="18000">Tambah Pesanan</button>
-            </div>
-          </article>
-
-          <article class="menu-card" data-category="coffee">
-            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=80" alt="Cappuccino">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Cappuccino</h3><span>Rp25.000</span></div>
-              <p>Perpaduan espresso, steamed milk, dan milk foam yang lembut dan klasik.</p>
-              <button class="btn btn-small add-to-cart" data-name="Cappuccino" data-price="25000">Tambah Pesanan</button>
-            </div>
-          </article>
-
-          <article class="menu-card" data-category="coffee">
-            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=700&q=80" alt="Caramel Latte">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Caramel Latte</h3><span>Rp28.000</span></div>
-              <p>Latte creamy dengan sentuhan manis caramel yang cocok untuk semua suasana.</p>
-              <button class="btn btn-small add-to-cart" data-name="Caramel Latte" data-price="28000">Tambah Pesanan</button>
-            </div>
-          </article>
-
-          <article class="menu-card" data-category="noncoffee">
-            <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=700&q=80" alt="Matcha Latte">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Matcha Latte</h3><span>Rp27.000</span></div>
-              <p>Minuman creamy dengan rasa matcha lembut dan tampilan segar yang elegan.</p>
-              <button class="btn btn-small add-to-cart" data-name="Matcha Latte" data-price="27000">Tambah Pesanan</button>
-            </div>
-          </article>
-
-          <article class="menu-card" data-category="noncoffee">
-            <img src="https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=700&q=80" alt="Chocolate">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Chocolate</h3><span>Rp24.000</span></div>
-              <p>Hot chocolate kental dengan rasa manis seimbang dan tekstur halus.</p>
-              <button class="btn btn-small add-to-cart" data-name="Chocolate" data-price="24000">Tambah Pesanan</button>
-            </div>
-          </article>
-
-          <article class="menu-card" data-category="snack">
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=80" alt="Croissant Butter">
-            <div class="menu-content">
-              <div class="menu-top"><h3>Croissant Butter</h3><span>Rp20.000</span></div>
-              <p>Pastry renyah berlapis dengan aroma butter yang lembut dan gurih.</p>
-              <button class="btn btn-small add-to-cart" data-name="Croissant Butter" data-price="20000">Tambah Pesanan</button>
-            </div>
-          </article>
+        <div class="menu-grid" id="menuGrid">
+          <p class="menu-loading">Memuat menu...</p>
         </div>
       </div>
     </section>
@@ -341,6 +292,30 @@
   </footer>
 
   <div class="toast" id="toast">Pesanan berhasil ditambahkan.</div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="loginModal" hidden role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+    <div class="modal-box">
+      <button class="modal-close" id="loginModalClose" aria-label="Tutup modal">✕</button>
+      <h2 id="loginModalTitle">Login</h2>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px">Masuk ke akun Anda.</p>
+      <form id="loginForm" novalidate>
+        <label>
+          Email
+          <input type="email" id="loginEmail" placeholder="Alamat email" autocomplete="email" required />
+        </label>
+        <label style="margin-top:12px">
+          Password
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required />
+        </label>
+        <p class="form-error" id="loginModalError" hidden></p>
+        <button type="submit" class="btn btn-primary full-width" style="margin-top:16px">Masuk</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--muted)">
+        Admin? Buka <a href="admin.html" style="color:var(--accent)">halaman admin</a>.
+      </p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

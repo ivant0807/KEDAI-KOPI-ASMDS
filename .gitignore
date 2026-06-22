@@ -1,0 +1,20 @@
+# Dependencies
+backend/node_modules/
+
+# Environment variables — JANGAN pernah di-commit
+backend/.env
+
+# Prisma generated client
+backend/node_modules/.prisma/
+
+# PM2 logs
+backend/logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

@@ -1,6 +1,4 @@
 const filterButtons = document.querySelectorAll('.filter-btn');
-const menuCards = document.querySelectorAll('.menu-card');
-const addButtons = document.querySelectorAll('.add-to-cart');
 const cartItemsEl = document.getElementById('cartItems');
 const cartCountEl = document.getElementById('cartCount');
 const cartTotalEl = document.getElementById('cartTotal');
@@ -52,7 +50,7 @@ filterButtons.forEach(button => {
     button.classList.add('active');
     const filter = button.dataset.filter;
 
-    menuCards.forEach(card => {
+    document.querySelectorAll('.menu-card').forEach(card => {
       const isVisible = filter === 'all' || card.dataset.category === filter;
       card.classList.toggle('hidden', !isVisible);
     });
@@ -101,23 +99,25 @@ function showToast(message) {
   }, 2200);
 }
 
-addButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const name = button.dataset.name;
-    const price = Number(button.dataset.price);
-    selectedMenuInput.value = name;
+function bindAddToCartButtons() {
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+      const name  = button.dataset.name;
+      const price = Number(button.dataset.price);
+      selectedMenuInput.value = name;
 
-    const existing = cart.find(item => item.name === name);
-    if (existing) {
-      existing.qty += 1;
-    } else {
-      cart.push({ name, price, qty: 1 });
-    }
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
 
-    renderCart();
-    showToast(`${name} ditambahkan ke pesanan.`);
+      renderCart();
+      showToast(`${name} ditambahkan ke pesanan.`);
+    });
   });
-});
+}
 
 orderForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -137,3 +137,147 @@ orderForm.addEventListener('submit', (event) => {
 });
 
 renderCart();
+
+// ── Escape HTML (aman dari XSS saat render data dari API) ──────────────────
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// ── Render kartu menu dari data produk API ─────────────────────────────────
+function createMenuCard(product) {
+  const fallbackImg = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=80';
+  const img  = product.imageUrl || fallbackImg;
+  const name = escapeHtml(product.name);
+  const desc = escapeHtml(product.description);
+  const price = formatRupiah(product.price);
+  return `
+    <article class="menu-card" data-category="${escapeHtml(product.category)}">
+      <img src="${escapeHtml(img)}" alt="${name}" loading="lazy">
+      <div class="menu-content">
+        <div class="menu-top"><h3>${name}</h3><span>${price}</span></div>
+        <p>${desc}</p>
+        <button class="btn btn-small add-to-cart"
+                data-name="${name}"
+                data-price="${product.price}">Tambah Pesanan</button>
+      </div>
+    </article>`;
+}
+
+// ── Fetch produk dari backend dan render ke menu grid ─────────────────────
+async function loadProducts() {
+  const menuGrid = document.getElementById('menuGrid');
+  try {
+    const res = await fetch('/api/products');
+    if (!res.ok) throw new Error('Response bukan OK');
+    const products = await res.json();
+
+    if (!products.length) {
+      menuGrid.innerHTML = '<p class="menu-loading">Menu belum tersedia.</p>';
+      return;
+    }
+
+    menuGrid.innerHTML = products.map(createMenuCard).join('');
+    bindAddToCartButtons();
+  } catch {
+    menuGrid.innerHTML = '<p class="menu-loading">Gagal memuat menu. Coba muat ulang halaman.</p>';
+  }
+}
+
+loadProducts();
+
+// ── Auth: Login Modal ─────────────────────────────────────────────────────
+const TOKEN_KEY  = 'kopi_token';
+const USER_KEY   = 'kopi_user';
+const loginModal = document.getElementById('loginModal');
+
+function openLoginModal() {
+  loginModal.hidden = false;
+  document.getElementById('loginEmail').focus();
+}
+
+function closeLoginModal() {
+  loginModal.hidden = true;
+  document.getElementById('loginForm').reset();
+  document.getElementById('loginModalError').hidden = true;
+}
+
+document.getElementById('loginOpenBtn').addEventListener('click', openLoginModal);
+document.getElementById('loginModalClose').addEventListener('click', closeLoginModal);
+loginModal.addEventListener('click', (e) => { if (e.target === loginModal) closeLoginModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !loginModal.hidden) closeLoginModal(); });
+
+// ── Auth: Submit Login ─────────────────────────────────────────────────────
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl    = document.getElementById('loginModalError');
+  errEl.hidden   = true;
+
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Login gagal.';
+      errEl.hidden = false;
+      return;
+    }
+
+    localStorage.setItem(TOKEN_KEY, data.token);
+    localStorage.setItem(USER_KEY,  JSON.stringify(data.user));
+    closeLoginModal();
+    updateAuthUI(data.user);
+    showToast(`Selamat datang, ${data.user.username}!`);
+  } catch {
+    errEl.textContent = 'Tidak dapat terhubung ke server.';
+    errEl.hidden = false;
+  }
+});
+
+// ── Auth: Tampilkan status login di header ─────────────────────────────────
+function updateAuthUI(user) {
+  const authArea = document.getElementById('authArea');
+  if (user) {
+    const adminLink = user.role === 'ADMIN'
+      ? `<a href="admin.html" class="btn btn-secondary btn-small">Admin Panel</a>`
+      : '';
+    authArea.innerHTML = `
+      <span class="user-label">${escapeHtml(user.username)}</span>
+      ${adminLink}
+      <button class="btn btn-secondary btn-small" id="logoutBtn">Logout</button>`;
+    document.getElementById('logoutBtn').addEventListener('click', doLogout);
+  } else {
+    authArea.innerHTML = `<button class="btn btn-secondary btn-small" id="loginOpenBtn">Login</button>`;
+    document.getElementById('loginOpenBtn').addEventListener('click', openLoginModal);
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+  updateAuthUI(null);
+  showToast('Berhasil logout.');
+}
+
+// ── Auth: Cek sesi yang tersimpan saat halaman dibuka ─────────────────────
+(function initAuth() {
+  try {
+    const user = JSON.parse(localStorage.getItem(USER_KEY));
+    if (user && localStorage.getItem(TOKEN_KEY)) {
+      updateAuthUI(user);
+    }
+  } catch {
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+  }
+})();

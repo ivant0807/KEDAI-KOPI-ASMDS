@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – Kedai Kopi ASMDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .admin-wrap        { max-width: 960px; margin: 104px auto 60px; padding: 0 20px; }
+    .admin-card        { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 28px; margin-bottom: 24px; }
+    .admin-card h2     { font-size: 1.4rem; margin-bottom: 20px; color: var(--text); }
+
+    .product-table     { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .product-table th  { text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--line); color: var(--muted); font-weight: 600; white-space: nowrap; }
+    .product-table td  { padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--muted); vertical-align: middle; }
+    .product-table tr:last-child td { border-bottom: none; }
+    .tbl-actions       { display: flex; gap: 8px; }
+    .btn-danger        { background: #dc2626; color: #fff; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-weight: 600; }
+    .btn-danger:hover  { background: #b91c1c; }
+    .btn-edit          { background: var(--primary); color: #fff; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 0.82rem; font-weight: 600; }
+    .btn-edit:hover    { filter: brightness(1.15); }
+
+    .form-grid         { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-grid label   { display: flex; flex-direction: column; gap: 6px; font-size: 0.88rem; color: var(--muted); }
+    .form-grid .full   { grid-column: 1 / -1; }
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea { padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; color: var(--text); font-size: 0.9rem; }
+    .form-grid input:focus,
+    .form-grid select:focus,
+    .form-grid textarea:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .badge             { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+    .badge-coffee      { background: #78350f33; color: #d97706; }
+    .badge-noncoffee   { background: #16653233; color: #34d399; }
+    .badge-snack       { background: #4c1d9533; color: #a78bfa; }
+
+    .form-error        { color: #f87171; font-size: 0.85rem; margin-top: 8px; }
+    .form-error[hidden]{ display: none; }
+
+    .login-center      { display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 82px); padding: 20px; }
+    .login-box         { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; }
+    .login-box h1      { font-size: 1.8rem; margin-bottom: 6px; }
+    .login-box > p     { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+    .login-box label   { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-size: 0.88rem; color: var(--muted); }
+    .login-box input   { padding: 11px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; color: var(--text); font-size: 1rem; }
+    .login-box input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    #adminUserInfo     { font-size: 0.85rem; color: var(--muted); }
+    .table-wrap        { overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">☕</span>
+        <span class="brand-text">
+          <strong>KEDAI KOPI</strong>
+          <small>ASMDS</small>
+        </span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">← Kembali ke Website</a>
+      </nav>
+      <div class="header-actions">
+        <span id="adminUserInfo"></span>
+        <button class="btn btn-secondary btn-small" id="logoutBtn" hidden>Logout</button>
+        <button class="theme-toggle" data-theme-toggle aria-label="Ganti tema">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ── Login Section ─────────────────────────────────────── -->
+    <div class="login-center" id="loginSection">
+      <div class="login-box">
+        <h1>Admin Login</h1>
+        <p>Masuk dengan akun admin untuk mengelola produk.</p>
+        <form id="adminLoginForm" novalidate>
+          <label>
+            Email
+            <input type="email" id="adminEmail" placeholder="admin@kedaikopi-asmds.store" autocomplete="email" required />
+          </label>
+          <label>
+            Password
+            <input type="password" id="adminPassword" placeholder="Password" autocomplete="current-password" required />
+          </label>
+          <p class="form-error" id="loginError" hidden></p>
+          <button type="submit" class="btn btn-primary full-width" style="margin-top:8px">Masuk</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── Admin Panel ────────────────────────────────────────── -->
+    <div class="admin-wrap" id="adminSection" hidden>
+
+      <!-- Tambah Produk -->
+      <div class="admin-card">
+        <h2>Tambah Produk Baru</h2>
+        <form id="addProductForm" novalidate>
+          <div class="form-grid">
+            <label>
+              Nama Produk *
+              <input type="text" name="name" placeholder="Contoh: Cold Brew" required maxlength="100" />
+            </label>
+            <label>
+              Harga (Rp) *
+              <input type="number" name="price" placeholder="25000" required min="1000" />
+            </label>
+            <label>
+              Kategori *
+              <select name="category" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="coffee">Coffee</option>
+                <option value="noncoffee">Non Coffee</option>
+                <option value="snack">Snack</option>
+              </select>
+            </label>
+            <label>
+              URL Gambar (opsional)
+              <input type="url" name="imageUrl" placeholder="https://..." />
+            </label>
+            <label class="full">
+              Deskripsi *
+              <textarea name="description" rows="2" required maxlength="300" placeholder="Deskripsi singkat produk..."></textarea>
+            </label>
+          </div>
+          <p class="form-error" id="addError" hidden></p>
+          <button type="submit" class="btn btn-primary" style="margin-top:14px">+ Tambah Produk</button>
+        </form>
+      </div>
+
+      <!-- Daftar Produk -->
+      <div class="admin-card">
+        <h2>Daftar Produk</h2>
+        <div id="productTableWrap" class="table-wrap">Memuat...</div>
+      </div>
+
+      <!-- Edit Produk (tersembunyi sampai tombol Edit diklik) -->
+      <div class="admin-card" id="editCard" hidden>
+        <h2>Edit Produk</h2>
+        <form id="editProductForm" novalidate>
+          <input type="hidden" name="id" />
+          <div class="form-grid">
+            <label>
+              Nama Produk *
+              <input type="text" name="name" required maxlength="100" />
+            </label>
+            <label>
+              Harga (Rp) *
+              <input type="number" name="price" required min="1000" />
+            </label>
+            <label>
+              Kategori *
+              <select name="category" required>
+                <option value="coffee">Coffee</option>
+                <option value="noncoffee">Non Coffee</option>
+                <option value="snack">Snack</option>
+              </select>
+            </label>
+            <label>
+              URL Gambar
+              <input type="url" name="imageUrl" />
+            </label>
+            <label class="full">
+              Deskripsi *
+              <textarea name="description" rows="2" required maxlength="300"></textarea>
+            </label>
+            <label>
+              Status Ketersediaan
+              <select name="isAvailable">
+                <option value="true">✅ Tersedia</option>
+                <option value="false">❌ Nonaktif</option>
+              </select>
+            </label>
+          </div>
+          <p class="form-error" id="editError" hidden></p>
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <button type="button" class="btn btn-secondary" id="cancelEditBtn">Batal</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ── Theme Toggle ─────────────────────────────────────────
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const root = document.documentElement;
+    let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    root.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    themeBtn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // ── Auth Helpers ─────────────────────────────────────────
+    const TOKEN_KEY = 'kopi_token';
+    const USER_KEY  = 'kopi_user';
+
+    const getToken = () => localStorage.getItem(TOKEN_KEY);
+    const getUser  = () => { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch { return null; } };
+    const authHeaders = () => ({
+      'Authorization': `Bearer ${getToken()}`,
+      'Content-Type': 'application/json',
+    });
+
+    // ── UI Sections ──────────────────────────────────────────
+    const loginSection  = document.getElementById('loginSection');
+    const adminSection  = document.getElementById('adminSection');
+    const logoutBtn     = document.getElementById('logoutBtn');
+    const adminUserInfo = document.getElementById('adminUserInfo');
+
+    function showAdmin(user) {
+      loginSection.hidden = true;
+      adminSection.hidden = false;
+      logoutBtn.hidden    = false;
+      adminUserInfo.textContent = `Halo, ${user.username} (${user.role})`;
+      loadProducts();
+    }
+
+    function showLogin(message) {
+      loginSection.hidden = false;
+      adminSection.hidden = true;
+      logoutBtn.hidden    = true;
+      adminUserInfo.textContent = '';
+      if (message) {
+        const el = document.getElementById('loginError');
+        el.textContent = message;
+        el.hidden = false;
+      }
+    }
+
+    function doLogout() {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+      showLogin();
+    }
+
+    logoutBtn.addEventListener('click', doLogout);
+
+    // ── Init: cek token tersimpan ────────────────────────────
+    const savedUser = getUser();
+    if (savedUser && getToken()) {
+      if (savedUser.role === 'ADMIN') {
+        showAdmin(savedUser);
+      } else {
+        loginSection.innerHTML = `
+          <div style="text-align:center;padding:80px 20px">
+            <h2>Akses Ditolak</h2>
+            <p>Halaman ini hanya untuk admin.</p>
+            <a href="index.html" class="btn btn-primary" style="margin-top:20px;display:inline-flex">Kembali ke Website</a>
+          </div>`;
+      }
+    }
+
+    // ── Login Form ───────────────────────────────────────────
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      const errEl    = document.getElementById('loginError');
+      errEl.hidden   = true;
+
+      try {
+        const res  = await fetch('/api/auth/login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Login gagal.';
+          errEl.hidden = false;
+          return;
+        }
+        if (data.user.role !== 'ADMIN') {
+          errEl.textContent = 'Akun ini tidak memiliki akses admin.';
+          errEl.hidden = false;
+          return;
+        }
+
+        localStorage.setItem(TOKEN_KEY, data.token);
+        localStorage.setItem(USER_KEY,  JSON.stringify(data.user));
+        showAdmin(data.user);
+      } catch {
+        errEl.textContent = 'Tidak dapat terhubung ke server. Pastikan backend berjalan.';
+        errEl.hidden = false;
+      }
+    });
+
+    // ── Load & Render Produk ─────────────────────────────────
+    async function loadProducts() {
+      const wrap = document.getElementById('productTableWrap');
+      wrap.textContent = 'Memuat...';
+      try {
+        const res  = await fetch('/api/products');
+        const data = await res.json();
+        if (!res.ok || !Array.isArray(data)) throw new Error();
+
+        if (!data.length) {
+          wrap.innerHTML = '<p style="color:var(--muted)">Belum ada produk. Tambah produk di atas.</p>';
+          return;
+        }
+
+        wrap.innerHTML = `
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.map(p => `
+                <tr>
+                  <td>${p.id}</td>
+                  <td><strong style="color:var(--text)">${escHtml(p.name)}</strong></td>
+                  <td><span class="badge badge-${p.category}">${p.category}</span></td>
+                  <td>${fmtRp(p.price)}</td>
+                  <td>${p.isAvailable ? '✅ Tersedia' : '❌ Nonaktif'}</td>
+                  <td class="tbl-actions">
+                    <button class="btn-edit"   onclick="startEdit(${p.id})">Edit</button>
+                    <button class="btn-danger" onclick="delProduct(${p.id}, ${JSON.stringify(p.name)})">Hapus</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`;
+      } catch {
+        wrap.innerHTML = '<p style="color:#f87171">Gagal memuat produk.</p>';
+      }
+    }
+
+    // ── Add Product ──────────────────────────────────────────
+    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form  = e.target;
+      const errEl = document.getElementById('addError');
+      errEl.hidden = true;
+
+      const body = {
+        name:        form.name.value.trim(),
+        description: form.description.value.trim(),
+        price:       parseInt(form.price.value, 10),
+        category:    form.category.value,
+        imageUrl:    form.imageUrl.value.trim() || null,
+      };
+
+      try {
+        const res  = await fetch('/api/products', {
+          method:  'POST',
+          headers: authHeaders(),
+          body:    JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Gagal menambah produk.'; errEl.hidden = false; return; }
+
+        form.reset();
+        await loadProducts();
+        adminToast('Produk berhasil ditambahkan.');
+      } catch {
+        errEl.textContent = 'Tidak dapat terhubung ke server.';
+        errEl.hidden = false;
+      }
+    });
+
+    // ── Edit Product ─────────────────────────────────────────
+    let editingId = null;
+    const editCard = document.getElementById('editCard');
+    const editForm = document.getElementById('editProductForm');
+
+    async function startEdit(id) {
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        if (!res.ok) { alert('Gagal memuat data produk.'); return; }
+        const p = await res.json();
+
+        editForm.id.value                        = p.id;
+        editForm.name.value                      = p.name;
+        editForm.price.value                     = p.price;
+        editForm.category.value                  = p.category;
+        editForm.imageUrl.value                  = p.imageUrl || '';
+        editForm.description.value               = p.description;
+        editForm.isAvailable.value               = String(p.isAvailable);
+        editingId                                = p.id;
+        document.getElementById('editError').hidden = true;
+        editCard.hidden = false;
+        editCard.scrollIntoView({ behavior: 'smooth' });
+      } catch {
+        alert('Gagal memuat data produk.');
+      }
+    }
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      editCard.hidden = true;
+      editingId = null;
+      editForm.reset();
+    });
+
+    editForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!editingId) return;
+      const errEl = document.getElementById('editError');
+      errEl.hidden = true;
+
+      const body = {
+        name:        editForm.name.value.trim(),
+        description: editForm.description.value.trim(),
+        price:       parseInt(editForm.price.value, 10),
+        category:    editForm.category.value,
+        imageUrl:    editForm.imageUrl.value.trim() || null,
+        isAvailable: editForm.isAvailable.value === 'true',
+      };
+
+      try {
+        const res  = await fetch(`/api/products/${editingId}`, {
+          method:  'PUT',
+          headers: authHeaders(),
+          body:    JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Gagal menyimpan.'; errEl.hidden = false; return; }
+
+        editCard.hidden = true;
+        editingId = null;
+        editForm.reset();
+        await loadProducts();
+        adminToast('Produk berhasil diperbarui.');
+      } catch {
+        errEl.textContent = 'Tidak dapat terhubung ke server.';
+        errEl.hidden = false;
+      }
+    });
+
+    // ── Delete Product ───────────────────────────────────────
+    async function delProduct(id, name) {
+      if (!confirm(`Hapus produk "${name}"?\nTindakan ini tidak dapat dibatalkan.`)) return;
+      try {
+        const res  = await fetch(`/api/products/${id}`, { method: 'DELETE', headers: authHeaders() });
+        const data = await res.json();
+        if (!res.ok) { alert(data.error || 'Gagal menghapus produk.'); return; }
+        await loadProducts();
+        adminToast('Produk berhasil dihapus.');
+      } catch {
+        alert('Tidak dapat terhubung ke server.');
+      }
+    }
+
+    // ── Helpers ──────────────────────────────────────────────
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    }
+
+    function fmtRp(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency', currency: 'IDR', maximumFractionDigits: 0,
+      }).format(amount);
+    }
+
+    function adminToast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      Object.assign(t.style, {
+        position: 'fixed', bottom: '24px', right: '24px',
+        background: 'var(--surface)', border: '1px solid var(--accent)',
+        color: 'var(--accent)', padding: '12px 22px', borderRadius: '8px',
+        fontSize: '0.9rem', zIndex: 9999, boxShadow: 'var(--shadow)',
+      });
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2600);
+    }
+  </script>
+
+</body>
+</html>
