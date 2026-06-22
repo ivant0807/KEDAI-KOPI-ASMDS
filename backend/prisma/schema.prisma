@@ -18,6 +18,13 @@ enum Category {
   snack
 }
 
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -41,5 +48,31 @@ model Product {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt    @map("updated_at")
 
+  orderItems  OrderItem[]
+
   @@map("products")
+}
+
+model Order {
+  id           Int         @id @default(autoincrement())
+  customerName String      @map("customer_name")
+  total        Int
+  status       OrderStatus @default(PENDING)
+  items        OrderItem[]
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int?     @map("product_id")
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name      String   // snapshot nama produk saat order dibuat
+  price     Int      // snapshot harga satuan saat order dibuat
+  quantity  Int
+
+  @@map("order_items")
 }

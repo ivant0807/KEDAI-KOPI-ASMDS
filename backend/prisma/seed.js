@@ -80,6 +80,56 @@ async function main() {
     console.log(`ℹ️  ${existingCount} produk sudah ada — seed produk dilewati.`);
   }
 
+  // Seed pesanan contoh — hanya jika tabel masih kosong (untuk demo dashboard)
+  const orderCount = await prisma.order.count();
+  if (orderCount === 0) {
+    const allProducts = await prisma.product.findMany();
+    const customers   = ['Andi', 'Budi', 'Citra', 'Dewi', 'Eka', 'Fajar', 'Gita', 'Hadi'];
+    // Bobot status: mayoritas COMPLETED agar penjualan terlihat realistis
+    const statuses    = ['COMPLETED', 'COMPLETED', 'COMPLETED', 'PROCESSING', 'PENDING', 'CANCELLED'];
+    const rand        = (n) => Math.floor(Math.random() * n);
+    const pick        = (arr) => arr[rand(arr.length)];
+
+    let created = 0;
+    for (let i = 0; i < 18; i++) {
+      // Tanggal acak dalam 7 hari terakhir
+      const date = new Date();
+      date.setDate(date.getDate() - rand(7));
+      date.setHours(8 + rand(12), rand(60), 0, 0);
+
+      // 1–3 item per pesanan
+      const itemCount = 1 + rand(3);
+      const chosen    = new Set();
+      const items     = [];
+      for (let j = 0; j < itemCount; j++) {
+        const p = allProducts[rand(allProducts.length)];
+        if (chosen.has(p.id)) continue;
+        chosen.add(p.id);
+        items.push({
+          productId: p.id,
+          name:      p.name,
+          price:     p.price,
+          quantity:  1 + rand(3),
+        });
+      }
+      const total = items.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+      await prisma.order.create({
+        data: {
+          customerName: pick(customers),
+          total,
+          status:       pick(statuses),
+          createdAt:    date,
+          items:        { create: items },
+        },
+      });
+      created++;
+    }
+    console.log(`✅ ${created} pesanan contoh berhasil di-seed.`);
+  } else {
+    console.log(`ℹ️  ${orderCount} pesanan sudah ada — seed pesanan dilewati.`);
+  }
+
   console.log('\n🎉 Seed selesai.');
 }
 

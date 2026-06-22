@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk – KEDAI KOPI ASMDS</title>
+  <meta name="description" content="Halaman login dan registrasi Kedai Kopi ASMDS." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="auth-page">
+
+    <!-- Panel visual (kiri / header di mobile) -->
+    <aside class="auth-visual">
+      <div class="auth-visual-inner">
+        <a href="index.html" class="auth-brand">
+          <span class="brand-mark">☕</span>
+          <span class="brand-text">
+            <strong>KEDAI KOPI</strong>
+            <small>ASMDS</small>
+          </span>
+        </a>
+        <div class="auth-visual-copy">
+          <h1>Secangkir hangat<br>menanti Anda.</h1>
+          <p>Masuk untuk memesan menu favorit, atau buat akun baru dalam hitungan detik.</p>
+        </div>
+        <p class="auth-visual-foot">© 2026 Kedai Kopi ASMDS</p>
+      </div>
+    </aside>
+
+    <!-- Panel form (kanan) -->
+    <section class="auth-panel">
+      <div class="auth-card">
+
+        <!-- View: Login -->
+        <div id="loginView" class="auth-view">
+          <h2>Selamat datang kembali</h2>
+          <p class="auth-sub">Masuk ke akun Anda untuk melanjutkan.</p>
+
+          <form id="loginForm" novalidate>
+            <div class="field" data-field>
+              <label for="loginIdentifier">Email</label>
+              <input type="email" id="loginIdentifier" name="email" autocomplete="email"
+                     placeholder="nama@email.com" required />
+              <small class="field-error" data-error></small>
+            </div>
+
+            <div class="field" data-field>
+              <label for="loginPassword">Password</label>
+              <div class="password-wrap">
+                <input type="password" id="loginPassword" name="password" autocomplete="current-password"
+                       placeholder="Masukkan password" required />
+                <button type="button" class="pw-toggle" data-pw-toggle aria-label="Tampilkan password">👁</button>
+              </div>
+              <small class="field-error" data-error></small>
+            </div>
+
+            <div class="field-row">
+              <label class="checkbox">
+                <input type="checkbox" id="rememberMe" checked />
+                <span>Ingat saya</span>
+              </label>
+              <a href="#" class="link-muted" id="forgotLink">Lupa password?</a>
+            </div>
+
+            <p class="form-error" id="loginFormError" hidden></p>
+
+            <button type="submit" class="btn btn-primary full-width auth-submit" id="loginSubmit">
+              <span class="btn-label">Masuk</span>
+              <span class="spinner" hidden></span>
+            </button>
+          </form>
+
+          <p class="auth-switch">
+            Belum punya akun?
+            <a href="#" id="toRegister">Daftar sekarang</a>
+          </p>
+        </div>
+
+        <!-- View: Register -->
+        <div id="registerView" class="auth-view" hidden>
+          <h2>Buat akun baru</h2>
+          <p class="auth-sub">Gratis dan hanya butuh beberapa detik.</p>
+
+          <form id="registerForm" novalidate>
+            <div class="field" data-field>
+              <label for="regUsername">Username</label>
+              <input type="text" id="regUsername" name="username" autocomplete="username"
+                     placeholder="Min. 3 karakter" minlength="3" maxlength="30" required />
+              <small class="field-error" data-error></small>
+            </div>
+
+            <div class="field" data-field>
+              <label for="regEmail">Email</label>
+              <input type="email" id="regEmail" name="email" autocomplete="email"
+                     placeholder="nama@email.com" required />
+              <small class="field-error" data-error></small>
+            </div>
+
+            <div class="field" data-field>
+              <label for="regPassword">Password</label>
+              <div class="password-wrap">
+                <input type="password" id="regPassword" name="password" autocomplete="new-password"
+                       placeholder="Min. 8 karakter" minlength="8" required />
+                <button type="button" class="pw-toggle" data-pw-toggle aria-label="Tampilkan password">👁</button>
+              </div>
+              <small class="field-error" data-error></small>
+            </div>
+
+            <p class="form-error" id="registerFormError" hidden></p>
+
+            <button type="submit" class="btn btn-primary full-width auth-submit" id="registerSubmit">
+              <span class="btn-label">Daftar</span>
+              <span class="spinner" hidden></span>
+            </button>
+          </form>
+
+          <p class="auth-switch">
+            Sudah punya akun?
+            <a href="#" id="toLogin">Masuk di sini</a>
+          </p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

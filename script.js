@@ -190,66 +190,69 @@ async function loadProducts() {
 
 loadProducts();
 
-// ── Auth: Login Modal ─────────────────────────────────────────────────────
-const TOKEN_KEY  = 'kopi_token';
-const USER_KEY   = 'kopi_user';
+// ── Auth: status sesi di header ───────────────────────────────────────────
+// Login & register lengkap ada di login.html. Modal lama tetap tersedia
+// sebagai quick-login opsional (markup dibiarkan), namun tombol utama header
+// mengarah ke halaman login.html.
 const loginModal = document.getElementById('loginModal');
 
 function openLoginModal() {
+  if (!loginModal) return;
   loginModal.hidden = false;
-  document.getElementById('loginEmail').focus();
+  const emailField = document.getElementById('loginEmail');
+  if (emailField) emailField.focus();
 }
 
 function closeLoginModal() {
+  if (!loginModal) return;
   loginModal.hidden = true;
   document.getElementById('loginForm').reset();
   document.getElementById('loginModalError').hidden = true;
 }
 
-document.getElementById('loginOpenBtn').addEventListener('click', openLoginModal);
-document.getElementById('loginModalClose').addEventListener('click', closeLoginModal);
-loginModal.addEventListener('click', (e) => { if (e.target === loginModal) closeLoginModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !loginModal.hidden) closeLoginModal(); });
+if (loginModal) {
+  document.getElementById('loginModalClose').addEventListener('click', closeLoginModal);
+  loginModal.addEventListener('click', (e) => { if (e.target === loginModal) closeLoginModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !loginModal.hidden) closeLoginModal(); });
 
-// ── Auth: Submit Login ─────────────────────────────────────────────────────
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email    = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const errEl    = document.getElementById('loginModalError');
-  errEl.hidden   = true;
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email    = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errEl    = document.getElementById('loginModalError');
+    errEl.hidden   = true;
 
-  try {
-    const res  = await fetch('/api/auth/login', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
+    try {
+      const res  = await fetch('/api/auth/login', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-    if (!res.ok) {
-      errEl.textContent = data.error || 'Login gagal.';
+      if (!res.ok) {
+        errEl.textContent = data.error || 'Login gagal.';
+        errEl.hidden = false;
+        return;
+      }
+
+      KopiAuth.saveSession(data.token, data.user, true);
+      closeLoginModal();
+      updateAuthUI(data.user);
+      showToast(`Selamat datang, ${data.user.username}!`);
+    } catch {
+      errEl.textContent = 'Tidak dapat terhubung ke server.';
       errEl.hidden = false;
-      return;
     }
-
-    localStorage.setItem(TOKEN_KEY, data.token);
-    localStorage.setItem(USER_KEY,  JSON.stringify(data.user));
-    closeLoginModal();
-    updateAuthUI(data.user);
-    showToast(`Selamat datang, ${data.user.username}!`);
-  } catch {
-    errEl.textContent = 'Tidak dapat terhubung ke server.';
-    errEl.hidden = false;
-  }
-});
+  });
+}
 
 // ── Auth: Tampilkan status login di header ─────────────────────────────────
 function updateAuthUI(user) {
   const authArea = document.getElementById('authArea');
   if (user) {
     const adminLink = user.role === 'ADMIN'
-      ? `<a href="admin.html" class="btn btn-secondary btn-small">Admin Panel</a>`
+      ? `<a href="dashboard.html" class="btn btn-secondary btn-small">Dashboard</a>`
       : '';
     authArea.innerHTML = `
       <span class="user-label">${escapeHtml(user.username)}</span>
@@ -257,27 +260,20 @@ function updateAuthUI(user) {
       <button class="btn btn-secondary btn-small" id="logoutBtn">Logout</button>`;
     document.getElementById('logoutBtn').addEventListener('click', doLogout);
   } else {
-    authArea.innerHTML = `<button class="btn btn-secondary btn-small" id="loginOpenBtn">Login</button>`;
-    document.getElementById('loginOpenBtn').addEventListener('click', openLoginModal);
+    authArea.innerHTML = `<a href="login.html" class="btn btn-secondary btn-small" id="loginLink">Login</a>`;
   }
 }
 
 function doLogout() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+  KopiAuth.clearSession();
   updateAuthUI(null);
   showToast('Berhasil logout.');
 }
 
 // ── Auth: Cek sesi yang tersimpan saat halaman dibuka ─────────────────────
 (function initAuth() {
-  try {
-    const user = JSON.parse(localStorage.getItem(USER_KEY));
-    if (user && localStorage.getItem(TOKEN_KEY)) {
-      updateAuthUI(user);
-    }
-  } catch {
-    localStorage.removeItem(USER_KEY);
-    localStorage.removeItem(TOKEN_KEY);
+  const user = KopiAuth.getUser();
+  if (user && KopiAuth.getToken()) {
+    updateAuthUI(user);
   }
 })();

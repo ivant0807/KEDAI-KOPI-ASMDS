@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – KEDAI KOPI ASMDS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="dash-body">
+  <div class="dash-layout" id="dashLayout">
+
+    <!-- Sidebar -->
+    <aside class="dash-sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <a href="index.html" class="brand sidebar-brand">
+          <span class="brand-mark">☕</span>
+          <span class="brand-text sidebar-brand-text">
+            <strong>KEDAI KOPI</strong>
+            <small>ASMDS</small>
+          </span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="sidebar-ico">📊</span><span class="sidebar-text">Dashboard</span>
+        </a>
+        <a href="admin.html" class="sidebar-link">
+          <span class="sidebar-ico">📦</span><span class="sidebar-text">Produk</span>
+        </a>
+        <a href="index.html" class="sidebar-link">
+          <span class="sidebar-ico">🏠</span><span class="sidebar-text">Lihat Website</span>
+        </a>
+      </nav>
+
+      <button class="sidebar-collapse" id="collapseBtn" aria-label="Lebarkan / ciutkan sidebar">
+        <span class="sidebar-ico">⟨</span><span class="sidebar-text">Ciutkan</span>
+      </button>
+    </aside>
+
+    <!-- Overlay drawer (mobile) -->
+    <div class="dash-overlay" id="dashOverlay" hidden></div>
+
+    <!-- Main -->
+    <div class="dash-main">
+      <!-- Topbar -->
+      <header class="dash-topbar">
+        <button class="icon-btn menu-burger" id="burgerBtn" aria-label="Buka menu">☰</button>
+
+        <div class="topbar-search">
+          <span class="search-ico">🔍</span>
+          <input type="search" id="topSearch" placeholder="Cari pesanan, produk..." aria-label="Pencarian" />
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifikasi">
+            🔔<span class="notif-dot"></span>
+          </button>
+          <button class="theme-toggle" data-theme-toggle aria-label="Ganti tema">🌙</button>
+
+          <div class="avatar-menu">
+            <button class="avatar-btn" id="avatarBtn" aria-haspopup="true" aria-expanded="false">
+              <span class="avatar-circle" id="avatarInitial">A</span>
+              <span class="avatar-name" id="avatarName">Admin</span>
+              <span class="avatar-caret">▾</span>
+            </button>
+            <div class="avatar-dropdown" id="avatarDropdown" hidden>
+              <p class="avatar-dd-email" id="avatarEmail"></p>
+              <a href="index.html" class="avatar-dd-item">🏠 Website</a>
+              <button class="avatar-dd-item danger" id="logoutBtn">🚪 Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="dash-content" id="dashContent">
+        <div class="content-head">
+          <h1>Dashboard</h1>
+          <p class="content-sub">Ringkasan aktivitas Kedai Kopi ASMDS.</p>
+        </div>
+
+        <!-- Error global -->
+        <div class="dash-error" id="dashError" hidden>
+          <p>⚠️ Gagal memuat data dashboard.</p>
+          <button class="btn btn-secondary btn-small" id="retryBtn">Coba lagi</button>
+        </div>
+
+        <!-- Kartu statistik -->
+        <section class="stat-row" id="statRow" aria-label="Statistik">
+          <!-- diisi oleh JS (skeleton dulu) -->
+        </section>
+
+        <!-- Grafik + tabel -->
+        <section class="dash-grid">
+          <div class="panel chart-panel">
+            <div class="panel-head">
+              <h2>Tren Penjualan</h2>
+              <span class="panel-tag">7 hari terakhir</span>
+            </div>
+            <div class="chart-box" id="chartBox">
+              <div class="skeleton skeleton-chart"></div>
+              <canvas id="salesChart" hidden></canvas>
+            </div>
+          </div>
+
+          <div class="panel orders-panel">
+            <div class="panel-head">
+              <h2>Pesanan Terbaru</h2>
+              <a href="#" class="panel-tag link-muted">Semua</a>
+            </div>
+            <div class="orders-box" id="ordersBox">
+              <!-- diisi oleh JS -->
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -145,6 +145,10 @@ Jika ini deployment pertama dan belum ada folder `prisma/migrations/`, jalankan:
 npx prisma migrate dev --name init
 ```
 
+> **Catatan:** Schema mencakup tabel `users`, `products`, `orders`, dan `order_items`.
+> Setiap kali `prisma/schema.prisma` berubah, jalankan ulang `npx prisma migrate dev --name <nama_perubahan>`
+> (lokal/dev) atau `npx prisma migrate deploy` (produksi) untuk menerapkan migrasi terbaru.
+
 ### Isi data awal (admin + produk contoh)
 
 ```bash
@@ -158,6 +162,7 @@ Memulai seed database...
 
 ✅ Admin: admin@kedaikopi-asmds.store (role: ADMIN)
 ✅ 6 produk berhasil di-seed.
+✅ 18 pesanan contoh berhasil di-seed.
 
 🎉 Seed selesai.
 ```
