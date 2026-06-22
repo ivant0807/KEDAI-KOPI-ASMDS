@@ -3,14 +3,18 @@
 #   docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
 # Tujuan: uji container TANPA merebut port 80/443 dari Nginx host
 # (situs lama tetap live selama pengujian).
+#
+# PENTING: `!override` WAJIB. Compose meng-CONCAT (bukan replace) list `ports`
+# antar file. Tanpa !override, port 80/443 dari base ikut terbawa dan nginx
+# container bentrok dgn nginx host ("address already in use").
 # =============================================================
 services:
   app:
     # Uji app langsung dari host, hanya loopback (tidak terekspos publik)
-    ports:
+    ports: !override
       - "127.0.0.1:3001:3000"
   nginx:
-    # Uji Nginx container di port alternatif
-    ports:
+    # Uji Nginx container di port alternatif (replace 80/443 dari base)
+    ports: !override
       - "8080:80"
       - "8443:443"
